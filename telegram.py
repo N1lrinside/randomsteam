@@ -3,12 +3,14 @@ import logging
 import sys
 from os import getenv
 import re
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold
+import random
+import requests
+from test import GameSteam
 
 # Bot token can be obtained via https://t.me/BotFather
 TOKEN = getenv('6864377086:AAHptfnSpDPnzRNDt4kaAwAW2oLIBRmH7zA')
@@ -35,12 +37,17 @@ async def command_start_handler(message: Message) -> None:
                          и бот случайным образом выберет игру из вашей библиотеки.\n"
                          f"🔍 Как использовать: \n")
 
-async def random(id_steam: str) -> str:
-    return f'https://steamcommunity.com/id/{id_steam}'
+def random(id_steam: str) -> str:
+    User = GameSteam(id_steam)
+    return f'https://steamcommunity.com/id/{User.random_games()}'
 
-@dp.message(commands=['start'])
+@dp.message(Command('randomgame'))
 async def randomgame(message: Message) -> None:
-    await message.answer(f'{random(id_steam)}')
+    try:
+        await message.answer(f'{random(id_steam)}')
+    except NameError:
+        await message.answer('Вы еще не отправляли ссылку на стим профиль')
+
 
 @dp.message()
 async def echo_handler(message: types.Message) -> None:
@@ -69,5 +76,8 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    asyncio.run(main())
+    try:
+        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print('Exit')
