@@ -17,7 +17,6 @@ mydb = mysql.connector.connect(
   database="databasename"
 )
 
-
 TOKEN = getenv('6864377086:AAHptfnSpDPnzRNDt4kaAwAW2oLIBRmH7zA')
 
 dp = Dispatcher()
@@ -49,6 +48,10 @@ async def randomgame(message: Message) -> None:
         await message.answer(f'{random(id_steam[0][0])}')
     except NameError:
         await message.answer('Вы еще не отправляли ссылку на стим профиль')
+
+def random(id_steam: str) -> str:
+    User = GameSteam(id_steam)
+    return f'https://steamcommunity.com/id/{User.random_games()}'
 
 @dp.message()
 async def echo_handler(message: types.Message) -> None:
