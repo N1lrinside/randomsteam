@@ -1,7 +1,7 @@
 import requests
 import random
-import time
 from deep_translator import GoogleTranslator
+
 class GameSteam:
     def __init__(self, user_id: str) -> None:
         self.user_id = user_id
