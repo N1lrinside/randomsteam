@@ -7,7 +7,7 @@ from app.handlers import router
 from app.others import mydb
 
 async def main() -> None:
-    bot = Bot('6864377086:AAHptfnSpDPnzRNDt4kaAwAW2oLIBRmH7zA', parse_mode=ParseMode.HTML)
+    bot = Bot('TG_TOKEN', parse_mode=ParseMode.HTML)
     dp = Dispatcher()
     dp.include_router(router)
     await dp.start_polling(bot)
